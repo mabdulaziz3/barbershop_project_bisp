@@ -1,0 +1,11 @@
+Django==5.1.5
+Pillow==11.1.0
+phonenumbers==8.13.54
+django-phonenumber-field==8.0.0
+babel==2.16.0
+setuptools==75.8.0
+requests~=2.32.3
+python-dotenv==1.0.1
+colorama~=0.4.6
+django-q2==1.7.6
+icalendar~=6.1.1

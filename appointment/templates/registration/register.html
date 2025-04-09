@@ -1,0 +1,141 @@
+{% extends "base_templates/base.html" %}
+{% load i18n %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block customCSS %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/base-style.css' %}"/>
+<style>
+    .form-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .form-group {
+        position: relative;
+        margin-bottom: 15px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px 10px 10px 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .form-group input:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    .form-group .icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        color: #333;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+        background-color: #0056b3;
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .login-link a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock customCSS %}
+
+{% block body %}
+<div class="form-container">
+    <h2>{% trans "Register Account" %}</h2>
+    <form method="post" action="{% url 'accounts:register' %}">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <span class="icon">
+                    {% if field.name == 'username' %}
+                        <ion-icon name="person-outline"></ion-icon>
+                    {% elif field.name == 'email' %}
+                        <ion-icon name="mail-outline"></ion-icon>
+                    {% elif field.name == 'password1' or field.name == 'password2' %}
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                    {% endif %}
+                </span>
+                {{ field }}
+                {% if field.name == 'password1' or field.name == 'password2' %}
+                    <span class="toggle-password" onclick="togglePasswordVisibility(this)">
+                        <ion-icon name="eye-outline"></ion-icon>
+                    </span>
+                {% endif %}
+                {% if field.errors %}
+                    <div class="error">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn-submit">{% trans "Register Account" %}</button>
+        <input type="hidden" name="next" value="{% url 'appointment:home' %}">
+    </form>
+    <div class="login-link">
+        <p>Already have an account? <a href="{% url 'accounts:login' %}">{% trans "Login" %}</a></p>
+    </div>
+</div>
+
+<script>
+    function togglePasswordVisibility(toggleIcon) {
+        const passwordField = toggleIcon.previousElementSibling;
+        const icon = toggleIcon.querySelector('ion-icon');
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.setAttribute('name', 'eye-off-outline');
+        } else {
+            passwordField.type = "password";
+            icon.setAttribute('name', 'eye-outline');
+        }
+    }
+</script>
+{% endblock body %}

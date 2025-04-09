@@ -1,0 +1,48 @@
+.home-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.home-container h1 {
+    font-size: 2.5em;
+    color: #333;
+}
+
+.home-container p {
+    font-size: 1.2em;
+    color: #666;
+} 
+
+/*service card*/
+
+/* Service Cards Styling */
+
+  
+  
+
+/* .service-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.service-card img {
+    max-height: 200px;
+    margin-bottom: 15px;
+}
+
+.service-card h3 {
+    font-size: 1.5em;
+    color: #333;
+}
+
+.service-card p {
+    font-size: 1em;
+    color: #666;
+}
+
+.service-card .btn {
+    margin-top: 10px;
+} */
