@@ -19,7 +19,7 @@ class ServiceAdmin(admin.ModelAdmin):
 
 @admin.register(AppointmentRequest)
 class AppointmentRequestAdmin(admin.ModelAdmin):
-    list_display = ('date', 'start_time', 'end_time', 'service', 'created_at', 'updated_at',)
+    list_display = ('date', 'start_time', 'end_time', 'service', 'created_at', 'updated_at', 'staff_member',)
     search_fields = ('date', 'service__name',)
     list_filter = ('date', 'service',)
 

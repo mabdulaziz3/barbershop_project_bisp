@@ -1,6 +1,3 @@
-# decorators.py
-# Path: appointment/decorators.py
-
 from functools import wraps
 
 from appointment.utils.error_codes import ErrorCode

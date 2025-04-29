@@ -38,13 +38,13 @@
                     <hr class="second-part">
                     <div class="user-info-input">
                         <div class="user-info" id="user-info">
-                            <h1 class="description-title">{% trans "Tell us a bit about yourself" %}</h1>
+                            {% comment %} <h1 class="description-title">{% trans "Tell us a bit about yourself" %}</h1>
                             <div class="already-have-account">
                                 <div>
                                     {% trans 'Already have an account?' %}
                                     <a href="#">{% trans 'Log in' %}</a> {% trans 'for faster booking.' %}
                                 </div>
-                            </div>
+                            </div> {% endcomment %}
                             <div class="name-email">
                                 <label for="{{ form.name.id_for_label }}" class="name">{% trans "Full Name" %} *<br>
                                     {{ client_data_form.name }}

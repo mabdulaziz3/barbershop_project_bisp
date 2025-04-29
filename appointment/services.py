@@ -515,9 +515,21 @@ def create_staff_member_service(post_data, request):
         last_name = form.cleaned_data['last_name']
         email = form.cleaned_data["email"]
 
-        if get_user_by_email(email):
-            return None, False, _("A user with this email already exists.")
-
+        existing_user = get_user_by_email(email)
+        if existing_user:
+            # If user exists but is not already a staff member
+            if not hasattr(existing_user, 'staffmember'):
+                existing_user.is_staff = True
+                existing_user.first_name = first_name
+                existing_user.last_name = last_name
+                existing_user.save()
+                StaffMember.objects.create(user=existing_user)
+                send_reset_link_to_staff_member(existing_user, request, existing_user.email)
+                return existing_user, True, None
+            else:
+                return None, False, _("This user is already a staff member.")
+        
+        # Create new user if they don't exist
         user_data = {
             'first_name': first_name,
             'last_name': last_name,

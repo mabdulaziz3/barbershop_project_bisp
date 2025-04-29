@@ -33,14 +33,17 @@ def handle_existing_email(request, client_data, appointment_data, appointment_re
 
     # clean the session variables
     session_keys = ['email', 'phone', 'want_reminder', 'address', 'additional_info']
-    phone = appointment_data['phone']
+    phone = appointment_data.get('phone')
+    
+    # Handle None phone number
+    phone_str = str(phone) if phone is not None else None
 
     for key in session_keys:
         if key in request.session:
             del request.session[key]
 
     request.session['email'] = client_data['email']
-    request.session['phone'] = str(phone)
+    request.session['phone'] = phone_str
     request.session['want_reminder'] = appointment_data['want_reminder']
     request.session['address'] = appointment_data['address']
     request.session['additional_info'] = appointment_data['additional_info']
@@ -75,7 +78,15 @@ def get_appointment_data_from_session(request):
     :return: The appointment data retrieved from the session.
     """
     phone = request.session.get('phone')
-    phone_obj = PhoneNumber.from_string(phone)
+    # Handle None phone number
+    phone_obj = None
+    if phone:
+        try:
+            phone_obj = PhoneNumber.from_string(phone)
+        except Exception:
+            # If there's an error parsing the phone number, set it to None
+            phone_obj = None
+            
     want_reminder = request.session.get('want_reminder') == 'on'
     address = request.session.get('address')
     additional_info = request.session.get('additional_info')

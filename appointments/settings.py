@@ -83,8 +83,12 @@ WSGI_APPLICATION = "appointments.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'barbershop_db',
+        'USER': 'postgres',
+        'PASSWORD': '7213.postgres',
+        'HOST': '127.0.0.1',
+        'DATABASE_PORT': '5432',
     }
 }
 
@@ -202,8 +206,8 @@ if 'django_q' in INSTALLED_APPS:
         }
     }
 
-LOGIN_REDIRECT_URL = 'appointment:home'
+LOGIN_REDIRECT_URL = 'appointment:get_user_appointments'
 LOGIN_URL = 'accounts:login'
-LOGOUT_REDIRECT_URL = 'appointment:home'
+LOGOUT_REDIRECT_URL = 'accounts:login'
 
 

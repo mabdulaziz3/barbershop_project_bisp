@@ -60,7 +60,7 @@ class AppointmentForm(forms.ModelForm):
                 {
                     'rows': 2,
                     'class': 'form-control',
-                    'placeholder': '1234 Main St, City, State, Zip Code',
+                    'placeholder': '30 Mirobod St, City, State, Zip Code',
                     'required': 'true'
                 })
         self.fields['additional_info'].widget.attrs.update(
@@ -200,7 +200,7 @@ class ServiceForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': _('Example: First Consultation')
+                'placeholder': _('Example: Curly Haircut')
             }),
             'description': forms.Textarea(attrs={
                 'class': 'form-control',
@@ -219,27 +219,67 @@ class ServiceForm(forms.ModelForm):
                 'placeholder': 'Example: 50.00 (0 for free)'
             }),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'currency': forms.Select(choices=[('USD', 'USD'), ('EUR', 'EUR'), ('GBP', 'GBP'), ('UZS', 'UZS')],
+            'currency': forms.Select(choices=[('USD', 'USD'), ('UZS', 'UZS')],
                                      attrs={'class': 'form-control'}),
             'background_color': forms.TextInput(attrs={'class': 'form-control', 'type': 'color', 'value': '#000000'}),
         }
 
 
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True, help_text='Required. Enter a valid email address.')
+    username = forms.CharField(max_length=50, required=True, help_text='Required. Enter your username.',
+                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
+    email = forms.EmailField(required=True, help_text='Required. Enter a valid email address.', 
+                             widget=forms.EmailInput(attrs={'class': 'form-control','placeholder': 'Email'}))
+                                                                                                        
+    first_name = forms.CharField(max_length=50, required=True, help_text='Required. Enter your first name.',
+                                  widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'First Name'}))
+            
+    last_name = forms.CharField(max_length=50, required=True, help_text='Required. Enter your last name.',
+                                widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Last Name'}))
+
+    password1 = forms.CharField(max_length=50, required=True,
+        label='Confirm Password',
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Password'
+        })
+    )
+    password2 = forms.CharField(max_length=50, required=True,
+        label='Confirm Password',
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Confirm Password'
+        })
+    )
+    
     class Meta:
         model = User
-        fields = ("username", "email", "password1", "password2")
+        fields = ("username", "email", "first_name", "last_name", "password1", "password2")
+    
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
+        user.first_name = self.cleaned_data["first_name"]
+        user.last_name = self.cleaned_data["last_name"]
         if commit:
             user.save()
         return user
-    
+
 
 class EmailAuthenticationForm(AuthenticationForm):
-    username = forms.EmailField(label='Email', max_length=254)
+    username = forms.EmailField(label='Email', max_length=254,  
+                                widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Username'}))
+    
+    password1 = forms.CharField(max_length=50, required=True,label='Password',
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Password'
+        })
+    )
+
+    class Meta:
+        model = User
+        fields = ("username", "password1")
 
     def clean(self):
         email = self.cleaned_data.get('username')

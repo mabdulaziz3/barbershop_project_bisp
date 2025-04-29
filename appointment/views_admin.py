@@ -442,7 +442,7 @@ def remove_superuser_staff_member(request):
 # Services
 
 @require_user_authenticated
-@require_superuser
+@require_staff_or_superuser
 def add_or_update_service(request, service_id=None, view=0):
     if request.method == 'POST':
         service, is_valid, error_message = handle_service_management_request(request.POST, request.FILES, service_id)

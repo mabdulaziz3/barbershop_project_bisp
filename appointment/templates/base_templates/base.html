@@ -36,40 +36,20 @@
           </a>
       </div>
       
-      <nav class="main-nav">
-          <ul class="nav-links">
-              <li><a href="{% url 'appointment:home' %}" class="{% if request.path == '/' %}active{% endif %}">HOME</a></li>
-              <li><a href="{% url 'appointment:home' %}" class="{% if 'contact' in request.path %}active{% endif %}">MEET & CONTACT</a></li>
-              <li><a href="{% url 'appointment:home' %}" class="{% if 'portfolio' in request.path %}active{% endif %}">PORTFOLIO</a></li>
-              <li><a href="{% url 'appointment:home' %}" class="{% if 'booking' in request.path %}active{% endif %}">BOOK US NOW</a></li>
-              <li class="dropdown">
-                  <a href="#" class="{% if 'login' in request.path or 'register' in request.path %}active{% endif %}">LOGIN & REGISTER</a>
-                  <div class="dropdown-content">
-                      <a href="{% url 'login' %}">Sign In</a>
-                      <a href="{% url 'accounts:register' %}">Join Us</a>
-                      {% comment %} <a href="{% url 'admin' %}">Studio Admin</a> {% endcomment %}
-                  </div>
-              </li>
-          </ul>
-      </nav>
       
+      
+      <ul class="nav-links">
       <div class="nav-right">
-          <div class="language-selector">
-              <select>
-                  <option value="en">English</option>
-                  <option value="es">Español</option>
-                  <option value="fr">Français</option>
-              </select>
-          </div>
-          
-          <button class="menu-toggle" id="menuToggle">
-              <i class="fas fa-bars"></i>
-          </button>
-          
-          <button class="search-toggle" id="searchToggle">
-              <i class="fas fa-search"></i>
-          </button>
+        
+        <li>
+            <a href="{% url 'accounts:register' %}" style="display: inline-block; padding: 5px 15px; border: 2px solid #000; border-radius: 25px; text-decoration: none; font-weight: bold;">
+            LIST YOUR BUSINESS
+            </a>
+        </li>
+        
+        
       </div>
+        </ul>
   </div>
 </header>
 
@@ -82,12 +62,12 @@
     <div class="container">
         <div class="footer-links">
             <a href="{% url 'appointment:home' %}">Home</a>
-            <a href="#">Book Now</a>
+            <a href="{% url 'appointment:home' %}">Book Now</a>
             <a href="{% url 'accounts:login' %}">Login</a>
             <a href="{% url 'accounts:register' %}">Register</a>
             <a href="'#'">Admin</a>
         </div>
-        <p>&copy; 2025 Barbershop Photography Studio. All rights reserved.</p>
+        <p>&copy; 2025 Barberly. All rights reserved.</p>
         <div class="social-icons">
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>

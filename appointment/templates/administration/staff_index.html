@@ -1,4 +1,4 @@
-{% extends 'base_templates/base.html' %}
+{% extends 'base_templates/base-admin.html' %}
 {% load i18n %}
 {% load static %}
 {% block customMetaTag %}
@@ -221,6 +221,8 @@
             #event-list-container {
                 display: none; /* Hide the event list container */
             }
+            transition: margin-left .3s ease-in-out;
+            margin-left: 250px;
         }
 
         /* Show event list container on smaller screens */

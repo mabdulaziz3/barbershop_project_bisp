@@ -8,6 +8,12 @@
     .app.sidenav-toggled .app-sidebar__overlay {
       visibility: hidden;
     }
+
+    .content-wrapper {
+      transition: margin-left .3s ease-in-out;
+      margin-left: 250px;
+    }
+    
   }
   
   

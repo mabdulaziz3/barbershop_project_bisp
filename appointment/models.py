@@ -16,7 +16,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from phonenumber_field.modelfields import PhoneNumberField # type: ignore
+from phonenumber_field.modelfields import PhoneNumberField 
 
 from appointment.utils.date_time import convert_minutes_in_human_readable_format, get_timestamp, get_weekday_num, \
     time_difference

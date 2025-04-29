@@ -69,7 +69,7 @@ body {
 
 .nav-links a:hover,
 .nav-links a.active {
-    color: #000;
+    color: #ffffff;
 }
 
 .nav-links a:after {
@@ -79,7 +79,7 @@ body {
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: #000;
+    background-color: #fff9f9;
     transition: width 0.3s;
 }
 
@@ -91,6 +91,7 @@ body {
 /* Dropdown styles */
 .dropdown {
     position: relative;
+    padding-top: 15px;
 }
 
 .dropdown-content {
@@ -120,9 +121,7 @@ body {
     background-color: #f9f9f9;
 }
 
-.dropdown-content a:after {
-    display: none;
-}
+
 
 /* Right side navigation elements */
 .nav-right {

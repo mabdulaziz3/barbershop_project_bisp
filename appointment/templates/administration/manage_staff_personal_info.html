@@ -1,9 +1,10 @@
-{% extends BASE_TEMPLATE %}
+{% extends 'base_templates/base-admin.html' %}
 {% load i18n %}
 {% load static %}
 
 {% block customCSS %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/app_admin/staff_member.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base-style.css' %}"/>
 {% endblock %}
 
 {% block body %}

@@ -13,6 +13,42 @@
     color: #666;
 } 
 
+
+.hero-banner {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 50px;
+}
+
+.hero-banner .content h1 {
+    font-weight: 700;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
+
+.hero-banner .btn {
+    background-color: #007bff;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+}
+
+.hero-banner .btn:hover {
+    background-color: #0056b3;
+}
+
+/* Service Card improvements */
+.service-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: #fff;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+
 /*service card*/
 
 /* Service Cards Styling */

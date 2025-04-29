@@ -4,26 +4,57 @@
 {% load django_bootstrap5 %}
 
 {% block customCSS %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/base-style.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base-style.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}"/>
+
 <style>
     .form-container {
-        max-width: 400px;
+        max-width: 500px;
         margin: 50px auto;
-        padding: 20px;
-        background-color: rgba(255, 255, 255, 0.9);
+        padding: 30px;
+        background-color: rgba(255, 255, 255, 0.95);
         border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
     .form-container h2 {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         font-weight: bold;
+        color: #333;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .form-container h2:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 3px;
+        background-color: #007bff;
+    }
+
+    .staff-notice {
+        background-color: #e8f4ff;
+        border-left: 4px solid #007bff;
+        padding: 15px;
+        margin-bottom: 25px;
+        border-radius: 0 5px 5px 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .staff-notice p {
+        margin-bottom: 0;
+        color: #2c3e50;
     }
 
     .form-group {
         position: relative;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
 
     .form-group input {
@@ -32,11 +63,23 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         font-size: 16px;
+        {% comment %} width: 100%;
+        padding: 12px 20px 12px 28px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        height: 48px;
+        box-sizing: border-box; {% endcomment %}
     }
 
     .form-group input:focus {
         border-color: #007bff;
         outline: none;
+        {% comment %} border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        outline: none;
+        transform: translateY(-1px); {% endcomment %}
     }
 
     .form-group .icon {
@@ -46,6 +89,18 @@
         transform: translateY(-50%);
         font-size: 18px;
         color: #333;
+        {% comment %} position: absolute;
+        left: 10px;
+        top: 50%;
+        bottom: 0;
+        height: 48px;
+        width: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        color: #6c757d;
+        font-size: 20px; {% endcomment %}
     }
 
     .toggle-password {
@@ -56,52 +111,122 @@
         cursor: pointer;
         font-size: 18px;
         color: #333;
+        {% comment %} position: absolute;
+        right: 15px;
+        top: 0;
+        bottom: 0;
+        height: 48px;
+        width: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 20px;
+        color: #6c757d;
+        transition: color 0.3s ease; {% endcomment %}
+    }
+
+    .toggle-password:hover {
+        color: #007bff;
+    }
+
+    ion-icon {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 20px;
     }
 
     .btn-submit {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         background-color: #007bff;
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         font-size: 16px;
-        margin-top: 10px;
+        font-weight: 600;
+        margin-top: 15px;
+        transition: background-color 0.3s ease;
+        height: 48px;
     }
 
     .btn-submit:hover {
         background-color: #0056b3;
     }
 
+    .form-group input::placeholder {
+        color: #aaa;
+    }
+
     .login-link {
         text-align: center;
-        margin-top: 15px;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
     }
 
     .login-link a {
         color: #007bff;
         text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
     }
 
     .login-link a:hover {
+        color: #0056b3;
         text-decoration: underline;
+    }
+
+    .form-text {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+
+    .errorlist {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        padding-left: 0;
+        list-style-type: none;
+    }
+
+    .errorlist li {
+        margin-bottom: 3px;
+    }
+
+    .form-group.has-error input {
+        border-color: #dc3545;
+    }
+
+    .form-group.has-error .icon {
+        color: #dc3545;
     }
 </style>
 {% endblock customCSS %}
 
 {% block body %}
 <div class="form-container">
-    <h2>{% trans "Register Account" %}</h2>
+    <h2>{% trans "Register as Staff Member" %}</h2>
+    
+    <div class="staff-notice">
+        <p>{% trans "By registering, you will be automatically assigned as a staff member. This account will have access to manage appointments and services." %}</p>
+    </div>
+    
     <form method="post" action="{% url 'accounts:register' %}">
         {% csrf_token %}
         {% for field in form %}
-            <div class="form-group">
+            <div class="form-group {% if field.errors %}has-error{% endif %}">
                 <span class="icon">
                     {% if field.name == 'username' %}
                         <ion-icon name="person-outline"></ion-icon>
                     {% elif field.name == 'email' %}
                         <ion-icon name="mail-outline"></ion-icon>
+                    {% elif field.name == 'first_name' %}
+                        <ion-icon name="person-outline"></ion-icon>
+                    {% elif field.name == 'last_name' %}
+                        <ion-icon name="person-outline"></ion-icon>
                     {% elif field.name == 'password1' or field.name == 'password2' %}
                         <ion-icon name="lock-closed-outline"></ion-icon>
                     {% endif %}
@@ -112,23 +237,41 @@
                         <ion-icon name="eye-outline"></ion-icon>
                     </span>
                 {% endif %}
+                {% if field.help_text %}
+                    <small class="form-text">{{ field.help_text }}</small>
+                {% endif %}
                 {% if field.errors %}
-                    <div class="error">{{ field.errors }}</div>
+                    <ul class="errorlist">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
             </div>
         {% endfor %}
-        <button type="submit" class="btn-submit">{% trans "Register Account" %}</button>
-        <input type="hidden" name="next" value="{% url 'appointment:home' %}">
+        
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <button type="submit" class="btn-submit">{% trans "Register" %}</button>
     </form>
+    
     <div class="login-link">
-        <p>Already have an account? <a href="{% url 'accounts:login' %}">{% trans "Login" %}</a></p>
+        <p>{% trans "Already have an account?" %} <a href="{% url 'login' %}">{% trans "Login" %}</a></p>
     </div>
 </div>
 
 <script>
     function togglePasswordVisibility(toggleIcon) {
-        const passwordField = toggleIcon.previousElementSibling;
-        const icon = toggleIcon.querySelector('ion-icon');
+        const formGroup = toggleIcon.closest('.form-group'); // Find the closest parent form-group
+        const passwordField = formGroup.querySelector('input'); // Find the input field inside the form-group
+        const icon = toggleIcon.querySelector('ion-icon'); // Find the ion-icon inside the toggle icon
+    
         if (passwordField.type === "password") {
             passwordField.type = "text";
             icon.setAttribute('name', 'eye-off-outline');
@@ -137,5 +280,29 @@
             icon.setAttribute('name', 'eye-outline');
         }
     }
+    
+    // Add placeholder text to form fields
+    document.addEventListener('DOMContentLoaded', function() {
+        const formFields = document.querySelectorAll('.form-group input');
+        formFields.forEach(function(field) {
+            if (field.name === 'username') {
+                field.placeholder = "{% trans 'Username' %}";
+            } else if (field.name === 'email') {
+                field.placeholder = "{% trans 'Email address' %}";
+            } else if (field.name === 'first_name') {
+                field.placeholder = "{% trans 'First name' %}";
+            } else if (field.name === 'last_name') {
+                field.placeholder = "{% trans 'Last name' %}";
+            } else if (field.name === 'password1') {
+                field.placeholder = "{% trans 'Password' %}";
+            } else if (field.name === 'password2') {
+                field.placeholder = "{% trans 'Confirm password' %}";
+            }
+        });
+    });
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
 </script>
 {% endblock body %}

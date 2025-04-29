@@ -40,7 +40,7 @@ from .decorators import require_ajax
 from .email_sender.email_sender import has_required_email_settings
 from .messages_ import passwd_error, passwd_set_successfully
 from .services import get_appointments_and_slots, get_available_slots_for_staff
-from .settings import (APPOINTMENT_PAYMENT_URL, APPOINTMENT_THANK_YOU_URL)
+from .settings import (APPOINTMENT_PAYMENT_URL, APPOINTMENT_THANK_YOU_URL, check_q_cluster)
 from .utils.date_time import convert_str_to_date
 from .utils.error_codes import ErrorCode
 from .utils.ics_utils import generate_ics_file
@@ -328,7 +328,7 @@ def appointment_client_information(request, appointment_request_id, id_request):
 
             logger.info(f"Creating a new user: {client_data}")
             user = create_new_user(client_data)
-            messages.success(request, _("An account was created for you."))
+            # messages.success(request, _("An account was created for you."))
 
             # Create a new appointment
             response = create_appointment(request, ar, client_data, appointment_data)
@@ -389,9 +389,7 @@ def enter_verification_code(request, appointment_request_id, id_request):
         else:
             messages.error(request, _("Invalid verification code."))
 
-    # base_template = request.session.get('BASE_TEMPLATE', '')
-    # if base_template == '':
-    #     base_template = APPOINTMENT_BASE_TEMPLATE
+    
     extra_context = {
         'appointment_request_id': appointment_request_id,
         'id_request': id_request,
@@ -600,17 +598,19 @@ def home(request):
     context = {'services': services}
     return render(request, 'appointment/home.html', context)
 
+from django.views.decorators.http import require_POST
 
+@require_POST
 def logout_view(request):
     """Log the user out."""
     logout(request)
-    return render(request, 'registration/logout.html')
+    return redirect('registration/login.html')
 
 def login_view(request):
-    """Log the user in."""
+    """Log the user in. Only staff members are allowed to log in."""
     page = 'login'
     if request.user.is_authenticated:
-        return redirect('appointment:home')
+        return redirect(reverse('appointment:get_user_appointments'))
     
     if request.method != 'POST':
         form = EmailAuthenticationForm()
@@ -618,10 +618,15 @@ def login_view(request):
         form = EmailAuthenticationForm(data=request.POST)
 
         if form.is_valid():
-            login(request, form.get_user())
-            return redirect('appointment:home')
+            user = form.get_user()
+            # Check if the user is a staff member
+            if user.is_staff or user.is_superuser:
+                login(request, user)
+                return redirect(reverse('appointment:get_user_appointments'))
+            else:
+                messages.error(request, _("Only staff members are allowed to log in. Please register as a staff member."))
         
-    context = {'page': page}    
+    context = {'page': page, 'form': form}    
     return render(request, 'registration/login.html', context)
 
 
@@ -629,7 +634,7 @@ from .forms import CustomUserCreationForm
 from django.contrib import messages
 
 def register(request):
-    """Register a new user."""
+    """Register a new user as a staff member."""
     if request.method != 'POST':
         # Display blank registration form.
         form = CustomUserCreationForm()
@@ -638,10 +643,17 @@ def register(request):
 
         if form.is_valid():
             new_user = form.save()
-            # messages.success(request, f"Account for {new_user}created successfully.")
-            # Log the user in and then redirect to home page.
+            # Set the user as a staff member
+            new_user.is_staff = True
+            new_user.save()
+            
+            # Create a StaffMember instance for the user
+            StaffMember.objects.create(user=new_user)
+            
+            # Log the user in and redirect to staff profile page
             login(request, new_user)
-            return redirect('appointment:home')
+            messages.success(request, _("Account created successfully. You are now registered as a staff member."))
+            return redirect('appointment:user_profile')
         
     # Display a blank or invalid form.
     context = {'form': form}
